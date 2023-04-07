@@ -10,6 +10,7 @@ import { RootState } from '../store'
 import { ITag, ITagsRequest } from '../services/tags'
 import { useAppDispatch, useTypedSelector } from '../hooks/useTypedSelector'
 import { getTagsAsync } from '../store/tags'
+import Questions from '../components/questions'
 
 export default function Page() {
   const isGetData = useRef(false)
@@ -32,16 +33,21 @@ export default function Page() {
   }, [fetchData])
 
   return (
-    <Box sx={{ display: 'flex' }}>
-      <Box sx={{ position: 'fixed', top: 0, left: 0, width: '70px', zIndex: 100 }}>
+    <Box sx={{ padding: 10 }}>
+      <Box sx={{ display: 'flex', width: '100%' }}>
         <Input
           fullWidth
           placeholder="Tag"
           value={keyword}
           onChange={(newValue) => setKeyword(newValue.target.value)}
         />
-        <Button onClick={fetchData}>Search</Button>
+        <Button variant="contained" onClick={fetchData}>
+          Search
+        </Button>
+      </Box>
+      <Box sx={{ width: '100%' }}>
         <Typography variant="h6">Trending</Typography>
+        <CircularProgress color="inherit" sx={{ display: loadingDisplay }} />
         {tags &&
           tags.map((tag: ITag, index) => (
             <Chip
@@ -53,8 +59,8 @@ export default function Page() {
               variant={index === 0 ? 'filled' : 'outlined'}
             />
           ))}
-        <CircularProgress color="inherit" sx={{ display: loadingDisplay }} />
       </Box>
+      <Questions />
     </Box>
   )
 }

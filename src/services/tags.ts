@@ -16,6 +16,9 @@ export interface ITagsRequest {
 
 export interface ITagsResponse {
   items: Array<ITag>
+  has_more: boolean
+  quota_max: number
+  quota_remaining: number
 }
 
 export function getTags(params: ITagsRequest | undefined = undefined): AxiosResponse {

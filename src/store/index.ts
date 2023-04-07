@@ -1,9 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
 import tagsSlice from './tags'
+import questionsSlice from './questions'
 
 const store = configureStore({
   reducer: {
     tags: tagsSlice.reducer,
+    questions: questionsSlice.reducer,
   },
 })
 
