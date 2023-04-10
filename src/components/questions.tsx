@@ -17,14 +17,14 @@ export default function Questions() {
   const isGetData = useRef(false)
   const dispatch = useAppDispatch()
   const [keyword] = useState('')
-  const [loadingDisplay, setLoadingDisplay] = useState('block')
+  const [loadingDisplay, setLoadingDisplay] = useState(true)
   const questions: Array<IQuestion> = useTypedSelector((state: RootState) => state.questions.list)
 
   const fetchData = useCallback(async () => {
-    setLoadingDisplay('block')
+    setLoadingDisplay(true)
     const params: IQuestionsRequest = { tagged: keyword }
     await dispatch(getQuestionsAsync(params))
-    setLoadingDisplay('none')
+    setLoadingDisplay(false)
   }, [dispatch, keyword])
 
   useEffect(() => {
@@ -35,85 +35,113 @@ export default function Questions() {
 
   return (
     <Box sx={{ width: '100%' }}>
-      {questions &&
-        questions.map((question: IQuestion) => (
-          <List
-            sx={{
-              display: 'flex',
-              width: '100%',
-              borderBottomColor: 'gray',
-              borderBottomStyle: 'solid',
-              borderBottomWidth: 1,
-            }}
-            key={question.question_id}
-          >
-            <ListItem sx={{ width: '80%' }}>
-              <ListItemText
-                primary={question.title}
-                secondary={
-                  <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-around' }}>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        color: 'red',
-                      }}
-                    >
-                      <Typography>Score</Typography>
-                      <Typography>{question.score}</Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        color: 'red',
-                      }}
-                    >
-                      <Typography>Answers</Typography>
-                      <Typography>{question.answer_count}</Typography>
-                    </Box>
-                    <Box
-                      sx={{
-                        display: 'flex',
-                        flexDirection: 'column',
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                        color: 'red',
-                      }}
-                    >
-                      <Typography>Viewed</Typography>
-                      <Typography>{question.view_count}</Typography>
-                    </Box>
-                  </Box>
-                }
-              />
-            </ListItem>
-            <ListItemAvatar
+      <Box sx={{ display: loadingDisplay ? 'none' : 'block' }}>
+        {questions &&
+          questions.map((question: IQuestion) => (
+            <List
               sx={{
                 display: 'flex',
-                flexDirection: 'column',
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '20%',
+                width: '100%',
+                borderBottomColor: 'gray',
+                borderBottomStyle: 'solid',
+                borderBottomWidth: 1,
+                cursor: 'pointer',
               }}
+              key={question.question_id}
+              onClick={() => window.open(question.link)}
             >
-              <Avatar alt={question.owner.display_name} src={question.owner.profile_image} />
-              <Typography
-                sx={{ display: 'inline' }}
-                component="span"
-                variant="body2"
-                color="text.primary"
+              <ListItem sx={{ width: '80%' }}>
+                <ListItemText
+                  primary={question.title}
+                  secondary={
+                    <Box sx={{ display: 'flex', width: '100%', justifyContent: 'space-around' }}>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          color: 'red',
+                        }}
+                      >
+                        <Typography>Score</Typography>
+                        <Typography color={question.score < 0 ? 'red' : 'black'}>
+                          {question.score}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          color: 'red',
+                        }}
+                      >
+                        <Typography>Answers</Typography>
+                        <Typography
+                          color={() => {
+                            if (question.answer_count > 0)
+                              if (question.is_answered) return 'white'
+                              else return 'green'
+                            return 'black'
+                          }}
+                          border={() => {
+                            if (question.is_answered) return 'solid 1px green'
+                            return ''
+                          }}
+                          bgcolor={() => {
+                            if (question.is_answered) return 'green'
+                            return ''
+                          }}
+                          width="100%"
+                          textAlign="center"
+                        >
+                          {question.answer_count}
+                        </Typography>
+                      </Box>
+                      <Box
+                        sx={{
+                          display: 'flex',
+                          flexDirection: 'column',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                          color: 'red',
+                        }}
+                      >
+                        <Typography>Viewed</Typography>
+                        <Typography color="black">{question.view_count}</Typography>
+                      </Box>
+                    </Box>
+                  }
+                />
+              </ListItem>
+              <ListItemAvatar
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  width: '20%',
+                }}
               >
-                {question.owner.display_name}
-              </Typography>
-            </ListItemAvatar>
-          </List>
-        ))}
-      <CircularProgress color="inherit" sx={{ display: loadingDisplay }} />
+                <Avatar alt={question.owner.display_name} src={question.owner.profile_image} />
+                <Typography
+                  sx={{ display: 'inline' }}
+                  component="span"
+                  variant="body2"
+                  color="text.primary"
+                >
+                  {question.owner.display_name}
+                </Typography>
+              </ListItemAvatar>
+            </List>
+          ))}
+      </Box>
+      <CircularProgress
+        color="inherit"
+        sx={{ display: loadingDisplay ? 'block' : 'none', marginTop: 20 }}
+      />
     </Box>
   )
 }

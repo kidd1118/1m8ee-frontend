@@ -16,14 +16,14 @@ export default function Page() {
   const isGetData = useRef(false)
   const dispatch = useAppDispatch()
   const [keyword, setKeyword] = useState('')
-  const [loadingDisplay, setLoadingDisplay] = useState('block')
+  const [loadingDisplay, setLoadingDisplay] = useState(true)
   const tags: Array<ITag> = useTypedSelector((state: RootState) => state.tags.list)
 
   const fetchData = useCallback(async () => {
-    setLoadingDisplay('block')
+    setLoadingDisplay(true)
     const params: ITagsRequest = { inname: keyword }
     await dispatch(getTagsAsync(params))
-    setLoadingDisplay('none')
+    setLoadingDisplay(false)
   }, [dispatch, keyword])
 
   useEffect(() => {
@@ -45,20 +45,27 @@ export default function Page() {
           Search
         </Button>
       </Box>
-      <Box sx={{ width: '100%' }}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
         <Typography variant="h6">Trending</Typography>
-        <CircularProgress color="inherit" sx={{ display: loadingDisplay }} />
-        {tags &&
-          tags.map((tag: ITag, index) => (
-            <Chip
-              label={tag.name}
-              component="a"
-              href="#basic-chip"
-              clickable
-              key={tag.name}
-              variant={index === 0 ? 'filled' : 'outlined'}
-            />
-          ))}
+        <CircularProgress
+          size={25}
+          color="inherit"
+          sx={{ display: loadingDisplay ? 'block' : 'none', marginLeft: '5px' }}
+        />
+        <Box sx={{ display: loadingDisplay ? 'none' : 'block' }}>
+          {tags &&
+            tags.map((tag: ITag, index) => (
+              <Chip
+                sx={{ margin: '5px' }}
+                label={tag.name}
+                component="a"
+                clickable
+                key={tag.name}
+                variant={index === 0 ? 'filled' : 'outlined'}
+                onClick={() => {}}
+              />
+            ))}
+        </Box>
       </Box>
       <Questions />
     </Box>
