@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/imbee-frontend/static/css/main.68e426e5.css",
+    "main.js": "/imbee-frontend/static/js/main.b20e7681.js",
+    "static/js/787.7b2884bd.chunk.js": "/imbee-frontend/static/js/787.7b2884bd.chunk.js",
+    "index.html": "/imbee-frontend/index.html",
+    "main.68e426e5.css.map": "/imbee-frontend/static/css/main.68e426e5.css.map",
+    "main.b20e7681.js.map": "/imbee-frontend/static/js/main.b20e7681.js.map",
+    "787.7b2884bd.chunk.js.map": "/imbee-frontend/static/js/787.7b2884bd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.68e426e5.css",
+    "static/js/main.b20e7681.js"
+  ]
+}
