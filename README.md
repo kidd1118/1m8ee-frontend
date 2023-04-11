@@ -1,4 +1,4 @@
-# Aha Frontend App
+# imBee Frontend App
 
 ## Tech Stacks
 

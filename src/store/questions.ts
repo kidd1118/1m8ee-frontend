@@ -30,7 +30,12 @@ const initialState: IQuestionstate = {
 const questionsSlice = createSlice({
   name: 'Questions',
   initialState,
-  reducers: {},
+  reducers: {
+    clear: (state) => {
+      const s = state
+      s.list.length = 0
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getQuestionsAsync.pending, (state) => {
@@ -39,7 +44,7 @@ const questionsSlice = createSlice({
       })
       .addCase(getQuestionsAsync.fulfilled, (state, { payload }) => {
         const s = state
-        s.list = payload.items
+        s.list = s.list.length > 0 ? s.list.concat(payload.items) : payload.items
         s.status = 'idle'
       })
       .addCase(getQuestionsAsync.rejected, (state, action) => {
@@ -52,4 +57,5 @@ const questionsSlice = createSlice({
   },
 })
 
+export const { clear } = questionsSlice.actions
 export default questionsSlice

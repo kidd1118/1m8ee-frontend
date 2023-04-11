@@ -39,7 +39,7 @@ export interface IQuestionsResponse {
 
 export function getQuestions(params: IQuestionsRequest | undefined = undefined): AxiosResponse {
   return axios.get(
-    'https://api.stackexchange.com/2.3/questions?page=1&pagesize=20&order=desc&sort=activity&site=stackoverflow',
+    'https://api.stackexchange.com/2.3/questions?pagesize=20&order=desc&sort=activity&site=stackoverflow',
     {
       params,
     }
