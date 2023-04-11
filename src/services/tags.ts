@@ -23,7 +23,7 @@ export interface ITagsResponse {
 
 export function getTags(params: ITagsRequest | undefined = undefined): AxiosResponse {
   return axios.get(
-    'https://api.stackexchange.com/2.3/tags?site=stackoverflow&page=1&pagesize=10&order=desc&sort=popular&filter=default',
+    'https://api.stackexchange.com/2.3/tags?key=U4DMV*8nvpm3EOpvf69Rxw((&site=stackoverflow&page=1&pagesize=10&order=desc&sort=popular&filter=default',
     {
       params,
     }

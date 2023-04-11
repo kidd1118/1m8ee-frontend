@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText'
 import ListItemAvatar from '@mui/material/ListItemAvatar'
 import Avatar from '@mui/material/Avatar'
 import Box from '@mui/material/Box'
-import { useCallback, useState } from 'react'
+import { useCallback } from 'react'
 import InfiniteScroll from 'react-infinite-scroll-component'
 import CircularProgress from '@mui/material/CircularProgress'
 import { IQuestion, IQuestionsRequest } from '../services/questions'
@@ -15,29 +15,27 @@ import { getQuestionsAsync } from '../store/questions'
 import { RootState } from '../store'
 
 interface Props {
-  page: number
   keyword: string
 }
 
-export default function Questions({ page, keyword }: Props) {
+export default function Questions({ keyword }: Props) {
   const dispatch = useAppDispatch()
-  const [currentPage, setCurrentPage] = useState(page)
   const questions: Array<IQuestion> = useTypedSelector((state: RootState) => state.questions.list)
+  const page: number = useTypedSelector((state: RootState) => state.questions.page)
 
   const fetchQuestionsData = useCallback(async () => {
-    const params: IQuestionsRequest = { tagged: keyword, page: currentPage }
+    const params: IQuestionsRequest = { tagged: keyword, page }
     await dispatch(getQuestionsAsync(params))
-  }, [currentPage, dispatch, keyword])
+  }, [page, dispatch, keyword])
 
   return (
     <div id="scrollableDiv" style={{ width: '100%', overflowY: 'auto' }}>
       <InfiniteScroll
         dataLength={questions.length}
         next={() => {
-          setCurrentPage(currentPage + 1)
           fetchQuestionsData()
         }}
-        hasMore
+        hasMore={page > 1}
         loader={<CircularProgress sx={{ margin: 5 }} />}
         scrollableTarget="scrollableDiv"
       >

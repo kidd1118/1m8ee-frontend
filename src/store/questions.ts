@@ -20,11 +20,13 @@ export const getQuestionsAsync = createAsyncThunk(
 export interface IQuestionstate {
   list: Array<IQuestion>
   status: string
+  page: number
 }
 
 const initialState: IQuestionstate = {
   list: [],
   status: 'idle',
+  page: 1,
 }
 
 const questionsSlice = createSlice({
@@ -34,6 +36,7 @@ const questionsSlice = createSlice({
     clear: (state) => {
       const s = state
       s.list.length = 0
+      s.page = 1
     },
   },
   extraReducers: (builder) => {
@@ -46,6 +49,7 @@ const questionsSlice = createSlice({
         const s = state
         s.list = s.list.length > 0 ? s.list.concat(payload.items) : payload.items
         s.status = 'idle'
+        s.page += 1
       })
       .addCase(getQuestionsAsync.rejected, (state, action) => {
         if (action.payload) {

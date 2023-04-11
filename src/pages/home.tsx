@@ -24,7 +24,7 @@ export default function Page() {
 
   const fetchQuestionsData = useCallback(
     async (questionKeyword: string = '') => {
-      clear()
+      dispatch(clear())
       const params: IQuestionsRequest = { tagged: questionKeyword, page: 1 }
       await dispatch(getQuestionsAsync(params))
     },
@@ -98,7 +98,7 @@ export default function Page() {
           height: '100%',
         }}
       >
-        <Questions page={1} keyword={tags && tags.length ? tags[selectedTagIndex].name : ''} />
+        <Questions keyword={tags && tags.length ? tags[selectedTagIndex].name : ''} />
       </Box>
     </Box>
   )
